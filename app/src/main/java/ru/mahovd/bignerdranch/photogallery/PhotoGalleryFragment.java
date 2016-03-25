@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
 
 /**
  * Created by dmitrijmahov on 24.03.16.
+ * Controller
  */
 public class PhotoGalleryFragment extends Fragment{
 
@@ -50,12 +49,9 @@ public class PhotoGalleryFragment extends Fragment{
     private class FetchItemTask extends AsyncTask<Void,Void,Void>{
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                String result = new FlickrFetch().getUrlString("https://www.bignerdranch.com");
-                Log.i(TAG,"Fetched contents of URL: "+result);
-            } catch (IOException ioe){
-                Log.e(TAG,"Failed to fetch URL: ",ioe);
-            }
+
+            new FlickrFetch().fetchItems();
+
             return  null;
         }
     }
