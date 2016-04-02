@@ -2,6 +2,8 @@ package ru.mahovd.bignerdranch.photogallery;
 
 /**
  * Created by mahovd on 28/03/16.
+ * Model
+ *
  */
 public class GalleryItem {
 

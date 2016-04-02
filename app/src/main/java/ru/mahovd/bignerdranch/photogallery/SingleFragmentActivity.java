@@ -8,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by mahovd on 08/11/15.
  * Controller
- * Creates activity with one fragment
+ * Inherits from support v7 library AppCompatActivity
  */
+
 public abstract class SingleFragmentActivity extends AppCompatActivity{
 
     protected abstract Fragment createFragment();
+
+    //Adds new fragment (PhotoGalleryFragment) to FragmentManager (fm)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -71,8 +71,12 @@ public class PhotoGalleryFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Helps instance of the fragment not to be destroyed when configuration changes
         setRetainInstance(true);
 
+
+        //Kick-off the fetching and parsing data
         new FetchItemTask().execute();
     }
 
@@ -84,6 +88,7 @@ public class PhotoGalleryFragment extends Fragment{
 
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.fragment_photo_gallery_recycler_view);
 
+        //Sets the particular type of LayoutManager
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         setupAdapter();
@@ -93,11 +98,15 @@ public class PhotoGalleryFragment extends Fragment{
     }
 
     private void setupAdapter(){
+
+        //Checks whether Fragment has been attached or not
         if (isAdded()){
+            //Creates and sets PhotoAdapter for our RecyclerView
             mPhotoRecyclerView.setAdapter(new PhotoAdapter(mItems));
         }
     }
 
+    //AsyncTask for getting and parsing JSON-data
     private class FetchItemTask extends AsyncTask<Void,Void,List<GalleryItem>>{
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
@@ -111,6 +120,10 @@ public class PhotoGalleryFragment extends Fragment{
             setupAdapter();
         }
     }
+
+    //TODO: I have to read about memory leaks related to AsyncTask and retained Fragment
+    //TODO: maybe I need to override method onDestroy
+
 
 
 }

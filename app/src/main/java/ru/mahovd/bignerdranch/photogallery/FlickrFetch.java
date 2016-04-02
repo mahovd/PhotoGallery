@@ -18,12 +18,16 @@ import java.util.List;
 /**
  * Created by mahovd on 25/03/16.
  * Controller
+ *
+ * Contains methods for fetching and parsing data (JSON)
  */
 public class FlickrFetch {
 
     private static final String TAG  = "FlickrFetch";
     private static final String API_KEY  = "ee2ccc95d9f1e54e82de945b8b444e96";
 
+
+    //The main method for fetching data
     public byte[] getUrlBytes(String urlSpec) throws IOException{
 
         URL url = new URL(urlSpec);
@@ -53,10 +57,12 @@ public class FlickrFetch {
 
     }
 
+    //Converts an ArrayOfBytes to String
     public String getUrlString(String urlSpec) throws IOException{
         return new String(getUrlBytes(urlSpec));
     }
 
+    //Kick-off the processes of fetching and parsing data
     public List<GalleryItem> fetchItems() {
 
         List<GalleryItem> items = new ArrayList<>();
@@ -85,6 +91,7 @@ public class FlickrFetch {
 
     }
 
+    //Parses JSON to List of GalleryItems
     private void parseItems(List<GalleryItem> items, JSONObject jsonBody) throws IOException, JSONException{
         JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
         JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
