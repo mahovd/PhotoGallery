@@ -1,15 +1,23 @@
 package ru.mahovd.bignerdranch.photogallery;
 
 import android.net.Uri;
+import android.util.JsonReader;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,10 +87,14 @@ public class FlickrFetch {
             String jsonString = getUrlString(url);
 
             Log.i(TAG, "Received JSON: " + jsonString);
-            JSONObject jsonBody = new JSONObject(jsonString);
-            parseItems(items,jsonBody);
-        } catch (JSONException je){
-            Log.e(TAG,"Failed to parse JSON",je);
+
+            //JSONObject jsonBody = new JSONObject(jsonString);
+            //parseItems(items,jsonBody);
+
+            parseItemsGSON(items,jsonString);
+
+        //} catch (JSONException je){
+        //    Log.e(TAG,"Failed to parse JSON",je);
         } catch (IOException ioe){
             Log.e(TAG,"Failed to fetch items",ioe);
         }
@@ -114,5 +126,39 @@ public class FlickrFetch {
     }
 
 
+    //Alternate way to parse JSON
+    private void parseItemsGSON(List<GalleryItem> items, String jsonString){
+
+        Gson gson = new GsonBuilder().create();
+
+        Flickr flickr = gson.fromJson(jsonString,Flickr.class);
+
+        for(Photo p:flickr.photos.photo){
+            GalleryItem item = new GalleryItem();
+            item.setId(p.id);
+            item.setCaption(p.title);
+            item.setUrl(p.url_s);
+            items.add(item);
+        }
+
+    }
+
+    //Inner class for parsing Json via GSON
+    private class Flickr{
+        public Photos photos;
+    }
+
+    //Inner class for parsing Json via GSON
+    private class Photos {
+        public List<Photo> photo;
+        private  int page;
+    }
+
+    //Inner class for parsing Json via GSON
+    private class Photo{
+        public String id;
+        public String title;
+        public String url_s;
+    }
 
 }
