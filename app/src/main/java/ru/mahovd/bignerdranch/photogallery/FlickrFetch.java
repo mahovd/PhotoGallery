@@ -137,6 +137,11 @@ public class FlickrFetch {
             GalleryItem item = new GalleryItem();
             item.setId(p.id);
             item.setCaption(p.title);
+
+            if(p.url_s == null){
+                continue;
+            }
+
             item.setUrl(p.url_s);
             items.add(item);
         }

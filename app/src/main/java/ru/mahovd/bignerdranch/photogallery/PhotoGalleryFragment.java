@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class PhotoGalleryFragment extends Fragment{
 
     private final static String TAG = "PhotoGalleryFragment";
     private RecyclerView mPhotoRecyclerView;
+    private TextView mEmptyView;
     private List<GalleryItem> mItems = new ArrayList<>();
 
     private class PhotoHolder extends RecyclerView.ViewHolder{
@@ -91,6 +93,8 @@ public class PhotoGalleryFragment extends Fragment{
         //Sets the particular type of LayoutManager
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
+        //mEmptyView = (TextView) v.findViewById(R.id.empty_view);
+
         setupAdapter();
 
         return v;
@@ -101,8 +105,8 @@ public class PhotoGalleryFragment extends Fragment{
 
         //Checks whether Fragment has been attached or not
         if (isAdded()){
-            //Creates and sets PhotoAdapter for our RecyclerView
-            mPhotoRecyclerView.setAdapter(new PhotoAdapter(mItems));
+                //Creates and sets PhotoAdapter for our RecyclerView
+                mPhotoRecyclerView.setAdapter(new PhotoAdapter(mItems));
         }
     }
 
@@ -123,7 +127,31 @@ public class PhotoGalleryFragment extends Fragment{
 
     //TODO: I have to read about memory leaks related to AsyncTask and retained Fragment
     //TODO: maybe I need to override method onDestroy
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        new FetchItemTask().cancel(true);
+    }
 
+    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+
+            GridLayoutManager mLayoutManager = (GridLayoutManager) mPhotoRecyclerView.getLayoutManager();
+            int visibleItemCount = mLayoutManager.getChildCount();
+            int totalItemCount = mLayoutManager.getItemCount();
+            int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+
+
+        }
+    };
 
 
 }
