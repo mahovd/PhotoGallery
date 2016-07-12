@@ -33,6 +33,7 @@ public class FlickrFetch {
 
     private static final String TAG  = "FlickrFetch";
     private static final String API_KEY  = "ee2ccc95d9f1e54e82de945b8b444e96";
+    private static Integer mPageNum = 1;
 
 
     //The main method for fetching data
@@ -70,6 +71,10 @@ public class FlickrFetch {
         return new String(getUrlBytes(urlSpec));
     }
 
+    public static void setmPageNum(Integer mPageNum) {
+        FlickrFetch.mPageNum = mPageNum;
+    }
+
     //Kick-off the processes of fetching and parsing data
     public List<GalleryItem> fetchItems() {
 
@@ -82,7 +87,10 @@ public class FlickrFetch {
                     appendQueryParameter("api_key", API_KEY).
                     appendQueryParameter("format", "json").
                     appendQueryParameter("nojsoncallback", "1").
-                    appendQueryParameter("extras", "url_s").build().toString();
+                    appendQueryParameter("extras", "url_s").
+                    appendQueryParameter("per_page","100").
+                    appendQueryParameter("page",mPageNum.toString())
+                    .build().toString();
 
             String jsonString = getUrlString(url);
 
