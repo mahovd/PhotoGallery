@@ -27,6 +27,12 @@ public class PhotoGalleryFragment extends Fragment{
     private TextView mEmptyView;
     private List<GalleryItem> mItems = new ArrayList<>();
 
+
+    private int mCurrentPage = 1;
+    private boolean mIsLoading = false;
+    private boolean mIsLastPage = false;
+    private static final int PAGE_SIZE = 100;
+
     private class PhotoHolder extends RecyclerView.ViewHolder{
         private TextView mTitleTextView;
 
@@ -79,6 +85,7 @@ public class PhotoGalleryFragment extends Fragment{
 
 
         //Kick-off the fetching and parsing data
+        FlickrFetch.setPageNum(mCurrentPage);
         new FetchItemTask().execute();
     }
 
@@ -120,7 +127,10 @@ public class PhotoGalleryFragment extends Fragment{
 
         @Override
         protected void onPostExecute(List<GalleryItem> items) {
+
             mItems = items;
+            mItems.addAll(items);
+
             setupAdapter();
         }
     }
@@ -149,9 +159,19 @@ public class PhotoGalleryFragment extends Fragment{
             int totalItemCount = mLayoutManager.getItemCount();
             int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
 
+            if(!mIsLoading && !mIsLastPage){
+                if((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                    && firstVisibleItemPosition >= 0
+                    && totalItemCount >= PAGE_SIZE){
 
+                    loadMoreItems();
+                }
+            }
         }
     };
 
+    private void loadMoreItems(){
+
+    }
 
 }

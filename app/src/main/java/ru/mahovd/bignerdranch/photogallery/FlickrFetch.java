@@ -71,7 +71,7 @@ public class FlickrFetch {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public static void setmPageNum(Integer mPageNum) {
+    public static void setPageNum(Integer mPageNum) {
         FlickrFetch.mPageNum = mPageNum;
     }
 
