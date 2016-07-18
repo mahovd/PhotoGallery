@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +102,10 @@ public class PhotoGalleryFragment extends Fragment{
 
         //mEmptyView = (TextView) v.findViewById(R.id.empty_view);
 
+        mPhotoRecyclerView.addOnScrollListener(mRecyclerViewOnScrollListener);
+
         setupAdapter();
+
 
         return v;
 
@@ -121,6 +124,7 @@ public class PhotoGalleryFragment extends Fragment{
     private class FetchItemTask extends AsyncTask<Void,Void,List<GalleryItem>>{
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
+            Log.i("PhotoGalleryFragment","doInBackground was started");
 
            return new FlickrFetch().fetchItems();
         }
@@ -128,7 +132,7 @@ public class PhotoGalleryFragment extends Fragment{
         @Override
         protected void onPostExecute(List<GalleryItem> items) {
 
-            mItems = items;
+            //mItems = items;
             mItems.addAll(items);
 
             setupAdapter();
@@ -171,6 +175,10 @@ public class PhotoGalleryFragment extends Fragment{
     };
 
     private void loadMoreItems(){
+
+        mCurrentPage +=1;
+        FlickrFetch.setPageNum(mCurrentPage);
+        new FetchItemTask().execute();
 
     }
 
