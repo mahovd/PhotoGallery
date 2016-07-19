@@ -28,7 +28,7 @@ public class PhotoGalleryFragment extends Fragment{
     private List<GalleryItem> mItems = new ArrayList<>();
 
 
-    private int mCurrentPage = 1;
+    private int mCurrentPage = 0;
     private boolean mIsLoading = false;
     private boolean mIsLastPage = false;
     private static final int PAGE_SIZE = 100;
@@ -124,6 +124,10 @@ public class PhotoGalleryFragment extends Fragment{
     private class FetchItemTask extends AsyncTask<Void,Void,List<GalleryItem>>{
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
+
+            mCurrentPage +=1;
+            FlickrFetch.setPageNum(mCurrentPage);
+
             Log.i("PhotoGalleryFragment","doInBackground was started");
 
            return new FlickrFetch().fetchItems();
@@ -176,8 +180,6 @@ public class PhotoGalleryFragment extends Fragment{
 
     private void loadMoreItems(){
 
-        mCurrentPage +=1;
-        FlickrFetch.setPageNum(mCurrentPage);
         new FetchItemTask().execute();
 
     }

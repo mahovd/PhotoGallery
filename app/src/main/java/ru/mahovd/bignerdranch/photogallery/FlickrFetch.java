@@ -33,7 +33,7 @@ public class FlickrFetch {
 
     private static final String TAG  = "FlickrFetch";
     private static final String API_KEY  = "ee2ccc95d9f1e54e82de945b8b444e96";
-    private static Integer mPageNum = 1;
+    private static Integer mPageNum = 0;
 
 
     //The main method for fetching data
