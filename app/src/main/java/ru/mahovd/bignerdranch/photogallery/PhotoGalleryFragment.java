@@ -26,6 +26,7 @@ public class PhotoGalleryFragment extends Fragment{
     private RecyclerView mPhotoRecyclerView;
     private TextView mEmptyView;
     private List<GalleryItem> mItems = new ArrayList<>();
+    private PhotoAdapter mAdapter;
 
 
     private int mCurrentPage = 0;
@@ -115,8 +116,13 @@ public class PhotoGalleryFragment extends Fragment{
 
         //Checks whether Fragment has been attached or not
         if (isAdded()){
+            if(mAdapter == null){
+                mAdapter = new PhotoAdapter(mItems);
                 //Creates and sets PhotoAdapter for our RecyclerView
-                mPhotoRecyclerView.setAdapter(new PhotoAdapter(mItems));
+                mPhotoRecyclerView.setAdapter(mAdapter);
+            }else {
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 
