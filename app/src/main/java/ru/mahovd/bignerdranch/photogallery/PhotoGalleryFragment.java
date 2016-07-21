@@ -134,6 +134,8 @@ public class PhotoGalleryFragment extends Fragment{
             mCurrentPage +=1;
             FlickrFetch.setPageNum(mCurrentPage);
 
+            mIsLoading = true;
+
             Log.i("PhotoGalleryFragment","doInBackground was started");
 
            return new FlickrFetch().fetchItems();
@@ -145,6 +147,7 @@ public class PhotoGalleryFragment extends Fragment{
             //mItems = items;
             mItems.addAll(items);
 
+            mIsLoading = false;
             setupAdapter();
         }
     }
