@@ -116,12 +116,18 @@ public class PhotoGalleryFragment extends Fragment{
 
         //Checks whether Fragment has been attached or not
         if (isAdded()){
+            //We have no data yet
             if(mAdapter == null){
                 mAdapter = new PhotoAdapter(mItems);
                 //Creates and sets PhotoAdapter for our RecyclerView
                 mPhotoRecyclerView.setAdapter(mAdapter);
             }else {
+                //mPhotoRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
+                //if adapter is not set (happens when orientation changes)
+                if(mPhotoRecyclerView.getAdapter()==null){
+                    mPhotoRecyclerView.setAdapter(mAdapter);
+                }
             }
         }
     }
